@@ -1,6 +1,9 @@
 package rtracer
 
-import "github.com/kczechowski/go-rtracer-challenge/rtracer/math"
+import (
+	"github.com/kczechowski/go-rtracer-challenge/rtracer/math"
+	math2 "math"
+)
 
 const TupleTypeVector = 0.0
 const TupleTypePoint = 1.0
@@ -29,7 +32,7 @@ func (t Tuple) IsVector() bool {
 
 func TupleEqual(t1, t2 Tuple) bool {
 	return math.Float64Equal(t1[0], t2[0], math.DefaultFloat64EqualityEpsilon) &&
-		math.Float64Equal(t1[1], t2[2], math.DefaultFloat64EqualityEpsilon) &&
+		math.Float64Equal(t1[1], t2[1], math.DefaultFloat64EqualityEpsilon) &&
 		math.Float64Equal(t1[2], t2[2], math.DefaultFloat64EqualityEpsilon) &&
 		math.Float64Equal(t1[3], t2[3], math.DefaultFloat64EqualityEpsilon)
 }
@@ -123,4 +126,35 @@ func (t Tuple) DivideByScalar(scalar float64) Tuple {
 	}
 
 	return t
+}
+
+func TupleMagnitude(t Tuple) float64 {
+	return math2.Sqrt(math2.Pow(t[0], 2) + math2.Pow(t[1], 2) + math2.Pow(t[2], 2))
+}
+
+func (t Tuple) Magnitude() float64 {
+	return math2.Sqrt(math2.Pow(t[0], 2) + math2.Pow(t[1], 2) + math2.Pow(t[2], 2))
+}
+
+func TupleNormalize(t Tuple) Tuple {
+	magnitude := TupleMagnitude(t)
+	return Tuple{t[0] / magnitude, t[1] / magnitude, t[2] / magnitude, t[3] / magnitude}
+}
+
+func (t Tuple) Normalize() Tuple {
+	magnitude := TupleMagnitude(t)
+	t[0] = t[0] / magnitude
+	t[1] = t[1] / magnitude
+	t[2] = t[2] / magnitude
+	t[3] = t[3] / magnitude
+
+	return t
+}
+
+func TupleDot(t1, t2 Tuple) float64 {
+	return t1[0]*t2[0] + t1[1]*t2[1] + t1[2]*t2[2] + t1[3]*t2[3]
+}
+
+func TupleCross(t1, t2 Tuple) Tuple {
+	return NewVector(t1[1]*t2[2]-t1[2]*t2[1], t1[2]*t2[0]-t1[0]*t2[2], t1[0]*t2[1]-t1[1]*t2[0])
 }

@@ -108,3 +108,71 @@ func TestTupleDivideByScalar(t *testing.T) {
 	assert.Equal(t, 1.5, t2[2])
 	assert.Equal(t, -2.0, t2[3])
 }
+
+/*
+​ 	​Scenario​: Computing the magnitude of vector(1, 0, 0)
+​ 	  ​Given​ v ← vector(1, 0, 0)
+​ 	  ​Then​ magnitude(v) = 1
+​ 	​Scenario​: Computing the magnitude of vector(0, 1, 0)
+​ 	  ​Given​ v ← vector(0, 1, 0)
+​ 	  ​Then​ magnitude(v) = 1
+​ 	​Scenario​: Computing the magnitude of vector(0, 0, 1)
+​ 	  ​Given​ v ← vector(0, 0, 1)
+​ 	  ​Then​ magnitude(v) = 1
+*/
+func TestTupleMagnitude(t *testing.T) {
+	assert.Equal(t, 1.0, TupleMagnitude(NewVector(0,1,0)))
+	assert.Equal(t, 1.0, TupleMagnitude(NewVector(1,0,0)))
+	assert.Equal(t, 1.0, TupleMagnitude(NewVector(0,0,1)))
+}
+
+/*
+​ 	​Scenario​: Normalizing vector(4, 0, 0) gives (1, 0, 0)
+​ 	  ​Given​ v ← vector(4, 0, 0)
+​ 	  ​Then​ normalize(v) = vector(1, 0, 0)
+​ 	​Scenario​: The magnitude of a normalized vector
+​ 	  ​Given​ v ← vector(1, 2, 3)
+​ 	  ​When​ norm ← normalize(v)
+​ 	  ​Then​ magnitude(norm) = 1
+*/
+func TestTupleNormalize(t *testing.T)  {
+	t1 := NewVector(4,0,0)
+	nt1 := TupleNormalize(t1)
+	assert.Equal(t, 1.0, nt1[0])
+	assert.Equal(t, 0.0, nt1[1])
+	assert.Equal(t, 0.0, nt1[2])
+
+	t2 := NewVector(1,2,3)
+	nt2 := TupleNormalize(t2)
+	assert.Equal(t, 1.0, nt2.Magnitude())
+}
+
+/*
+​ 	​Scenario​: The dot product of two tuples
+​ 	  ​Given​ a ← vector(1, 2, 3)
+​ 	    ​And​ b ← vector(2, 3, 4)
+​ 	  ​Then​ dot(a, b) = 20
+*/
+func TestTupleDot(t *testing.T) {
+	t1 := NewVector(1,2,3)
+	t2 := NewVector(2,3,4)
+	assert.Equal(t, 20.0, TupleDot(t1, t2))
+}
+
+/*
+​ 	​Scenario​: The cross product of two vectors
+​ 	  ​Given​ a ← vector(1, 2, 3)
+​ 	    ​And​ b ← vector(2, 3, 4)
+​ 	  ​Then​ cross(a, b) = vector(-1, 2, -1)
+​ 	    ​And​ cross(b, a) = vector(1, -2, 1)
+*/
+func TestTupleCross(t *testing.T) {
+	t1 := NewVector(1,2,3)
+	t2 := NewVector(2,3,4)
+
+	c1 := TupleCross(t1, t2)
+	assert.True(t, TupleEqual(c1, NewVector(-1, 2, -1)))
+
+	c2 := TupleCross(t2, t1)
+	assert.True(t, TupleEqual(c2, NewVector(1, -2, 1)))
+}
